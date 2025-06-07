@@ -16,7 +16,9 @@ export default function ChatRoom({ username, room, token }: { username: string; 
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        socket.auth = { token };
         socket.emit('join', room);
+        socket.connect();
 
         socket.on('message', (msg: Message) => {
             setMessages((prev) => [...prev, msg]);
