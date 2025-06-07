@@ -71,11 +71,11 @@ io.use((socket, next) => {
   const token = socket.handshake.auth.token;
   if (!token) return next(new Error('Brak tokena'));
 
-  jwt.verify(token, 'tajny_klucz', (err, user) => {
+    jwt.verify(token, 'tajny_klucz', (err: any, user: any) => {
     if (err) return next(new Error('Nieprawidłowy token'));
     (socket as any).user = user;
     next();
-  });
+    });
 });
 
 io.on('connection', (socket) => {
