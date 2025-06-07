@@ -8,7 +8,7 @@ type Message = {
     timestamp: number;
 };
 
-export default function ChatRoom({ username, room, token }: { username: string; room: string }) {
+export default function ChatRoom({ username, room, token }: { username: string; room: string; token: string; }) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [content, setContent] = useState('');
     const bottomRef = useRef<HTMLDivElement>(null);
