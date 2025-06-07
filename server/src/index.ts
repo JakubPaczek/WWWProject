@@ -22,7 +22,10 @@ const io = new Server(httpServer, {
 });
 
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://jakubpaczek.github.io'],
+  credentials: true,
+}));
 app.use(express.json());
 
 app.get('/ping', (_req, res) => {
