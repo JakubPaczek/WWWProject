@@ -22,6 +22,7 @@ const allowedOrigins = [
 const io = new Server(httpServer, {
     cors: {
         origin: allowedOrigins, // dokładny frontend
+        methods: ['GET', 'POST'],
         credentials: true,
     },
 });
