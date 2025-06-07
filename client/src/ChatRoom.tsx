@@ -8,6 +8,8 @@ type Message = {
     timestamp: number;
 };
 
+const BASE_URL = 'https://wwwproject.onrender.com';
+
 export default function ChatRoom({ username, room, token }: { username: string; room: string; token: string; }) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [content, setContent] = useState('');
@@ -21,7 +23,7 @@ export default function ChatRoom({ username, room, token }: { username: string; 
         });
 
         axios
-            .get(`http://localhost:5000/messages/${room}`, {
+            .get(`${BASE_URL}/messages/${room}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
