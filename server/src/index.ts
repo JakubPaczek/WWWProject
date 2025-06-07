@@ -14,8 +14,8 @@ const PORT = process.env.PORT || 5000;
 const httpServer = createServer(app);
 
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://jakubpaczek.github.io'
+    'http://localhost:5173',
+    'https://jakubpaczek.github.io'
 ];
 
 // Konfiguracja socket.io
@@ -28,8 +28,14 @@ const io = new Server(httpServer, {
 
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://jakubpaczek.github.io'],
-  credentials: true,
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
 }));
 app.use(express.json());
 
@@ -76,34 +82,34 @@ app.use('/auth', authRoutes);
 
 // Obsługa socket.io
 io.use((socket, next) => {
-  const token = socket.handshake.auth.token;
-  if (!token) return next(new Error('Brak tokena'));
+    const token = socket.handshake.auth.token;
+    if (!token) return next(new Error('Brak tokena'));
 
     jwt.verify(token, 'tajny_klucz', (err: any, user: any) => {
-    if (err) return next(new Error('Nieprawidłowy token'));
-    (socket as any).user = user;
-    next();
+        if (err) return next(new Error('Nieprawidłowy token'));
+        (socket as any).user = user;
+        next();
     });
 });
 
 io.on('connection', (socket) => {
-  const username = (socket as any).user.username;
-  console.log(`Socket połączony: ${username} (${socket.id})`);
+    const username = (socket as any).user.username;
+    console.log(`Socket połączony: ${username} (${socket.id})`);
 
-  socket.on('join', (room) => {
-    socket.join(room);
-  });
+    socket.on('join', (room) => {
+        socket.join(room);
+    });
 
-  socket.on('message', ({ room, content }) => {
-    const timestamp = Date.now();
-    if (typeof content !== 'string' || content.trim().length === 0) return;
+    socket.on('message', ({ room, content }) => {
+        const timestamp = Date.now();
+        if (typeof content !== 'string' || content.trim().length === 0) return;
 
-    db.prepare(
-      'INSERT INTO messages (room, username, content, timestamp) VALUES (?, ?, ?, ?)'
-    ).run(room, username, content, timestamp);
+        db.prepare(
+            'INSERT INTO messages (room, username, content, timestamp) VALUES (?, ?, ?, ?)'
+        ).run(room, username, content, timestamp);
 
-    io.to(room).emit('message', { content, username, timestamp });
-  });
+        io.to(room).emit('message', { content, username, timestamp });
+    });
 });
 
 
