@@ -7,7 +7,9 @@ const token = localStorage.getItem('token');
 const socket = io(BASE_URL, {
     transports: ['websocket'], // wymusza WebSocket
     withCredentials: true,
-    auth: { token },
+    auth: {
+        token: token
+    },
 });
 
 export default socket;
