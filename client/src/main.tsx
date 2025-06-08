@@ -9,7 +9,7 @@ import ChatRoom from './pages/ChatRoom.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    //<App />
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
