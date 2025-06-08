@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/WWWProject">
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route
