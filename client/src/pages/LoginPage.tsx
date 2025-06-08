@@ -26,7 +26,8 @@ export default function LoginPage() {
         const { token } = response.data;
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
-        navigate('/rooms');
+        window.location.href = '/rooms'; // wymusza pełne przeładowanie aplikacji (z nowym tokenem)
+
       } else {
         setMode('login');
         alert('Zarejestrowano. Możesz się zalogować.');
