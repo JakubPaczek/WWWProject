@@ -1,4 +1,4 @@
-import ChatRoom from './ChatRoom';
+import ChatRoom from './pages/ChatRoom';
 import './index.css';
 
 function App() {

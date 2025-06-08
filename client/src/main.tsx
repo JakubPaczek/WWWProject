@@ -5,7 +5,7 @@ import App from './App.tsx'
 import './index.css'
 import LoginPage from './pages/LoginPage.tsx';
 import RoomsPage from './pages/RoomsPage.tsx';
-import ChatRoom from './pages/ChatRoom.tsx';
+import ChatRoomWrapper from './pages/ChatRoomWrapper';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/rooms" element={<RoomsPage />} />
-        <Route path="/chat/:room" element={<ChatRoom />} />
+        <Route path="/chat/:room" element={ <ChatRoomWrapper /> } />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
