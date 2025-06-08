@@ -51,7 +51,7 @@ export default function ChatRoom({ username, room, token }: { username: string; 
     const trimmed = content.trim();
     if (!trimmed || trimmed.length > 500) return;
 
-    socket.emit('message', { room, content: trimmed, username });
+    socket.emit('message', { room, content: trimmed});
     setContent('');
     };
 
