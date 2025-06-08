@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import './index.css'
 
 import LoginPage from './pages/LoginPage.tsx';
@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename="/WWWProject">
+    <HashRouter basename="/WWWProject">
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route
@@ -31,6 +31,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           }
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
