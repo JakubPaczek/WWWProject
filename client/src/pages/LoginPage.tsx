@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        `https://TWOJ_BACKEND.onrender.com/auth/${mode}`,
+        `https://wwwproject.onrender.com/auth/${mode}`,
         { username, password }
       );
 
