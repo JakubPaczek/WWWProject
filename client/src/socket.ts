@@ -1,11 +1,18 @@
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
-const BASE_URL = 'https://wwwproject.onrender.com';
+let socket: Socket;
 
-const socket = io(BASE_URL, {
-    transports: ['websocket'], // wymusza WebSocket
+export function connectSocket(token: string) {
+  socket = io('https://wwwproject.onrender.com', {
+    transports: ['websocket'],
     withCredentials: true,
-    auth: { token: localStorage.getItem('token') },
-});
+    auth: { token },
+  });
+  return socket;
+}
 
-export default socket;
+export function disconnectSocket() {
+  if (socket) {
+    socket.disconnect();
+  }
+}
