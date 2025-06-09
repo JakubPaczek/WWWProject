@@ -9,7 +9,7 @@ export default function App() {
   return (
     <>
       <Header />
-      <div className="pt-16">
+      <main className="pt-16 min-h-screen bg-gray-100">
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route
@@ -29,7 +29,7 @@ export default function App() {
             }
           />
         </Routes>
-      </div>
+      </main>
     </>
   );
 }

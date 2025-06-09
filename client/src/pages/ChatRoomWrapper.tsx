@@ -8,7 +8,7 @@ export default function ChatRoomWrapper() {
 
     if (!room || !token || !username) {
         return (
-                <div className="pt-16 text-center">Brak dostępu – nie zalogowano lub brak pokoju.</div>
+                <div className="text-center">Brak dostępu – nie zalogowano lub brak pokoju.</div>
         );
     }
 
