@@ -1,15 +1,35 @@
-import ChatRoom from './pages/ChatRoom';
-import './index.css';
+import { Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import RoomsPage from './pages/RoomsPage';
+import ChatRoomWrapper from './pages/ChatRoomWrapper';
+import ProtectedRoute from './components/ProtectedRoute';
+import Header from './components/Header';
 
-function App() {
-  // tymczasowe dane testowe
-  const username = 'jakub';
-  const room = 'Informatyka';
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impha3ViIiwiaWF0IjoxNzQ5MTQwOTkxLCJleHAiOjE3NDkxNDQ1OTF9.Kfn6qNwRDtDyUcSPX6s_lOS_mGaMFARKH5F-AE2-kSs';
-
+export default function App() {
   return (
-    <ChatRoom username={username} room={room} token={token} />
+    <>
+      <Header />
+      <div className="pt-16">
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route
+            path="/rooms"
+            element={
+              <ProtectedRoute>
+                <RoomsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat/:room"
+            element={
+              <ProtectedRoute>
+                <ChatRoomWrapper />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+    </>
   );
 }
-
-export default App;
