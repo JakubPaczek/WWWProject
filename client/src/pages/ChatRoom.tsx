@@ -68,7 +68,13 @@ export default function ChatRoom({
 
     const formatTime = (ts: number) => {
         const d = new Date(ts);
-        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return d.toLocaleString('pl-PL', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
     };
 
     const handleLeave = () => {
