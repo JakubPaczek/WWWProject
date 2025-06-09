@@ -77,51 +77,54 @@ export default function ChatRoom({
     };
 
     return (
-            <div className="max-w-xl mx-auto flex flex-col h-screen p-4">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold">Pokój: {room}</h2>
-                    <button
-                        onClick={handleLeave}
-                        className="text-sm text-red-600 underline"
-                    >
-                        Opuść pokój
-                    </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto bg-gray-100 p-4 rounded shadow">
-                    {messages.map((m, i) => (
-                        <div
-                            key={i}
-                            className={`mb-2 p-2 rounded ${m.username === username
-                                    ? 'bg-blue-200 text-right'
-                                    : 'bg-white text-left'
-                                }`}
-                        >
-                            <div className="text-sm font-semibold">{m.username}</div>
-                            <div>{m.content}</div>
-                            <div className="text-xs text-gray-500">{formatTime(m.timestamp)}</div>
-                        </div>
-                    ))}
-                    <div ref={bottomRef} />
-                </div>
-
-                <div className="flex mt-4 gap-2">
-                    <input
-                        className="flex-1 p-2 border rounded shadow"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') sendMessage();
-                        }}
-                        placeholder="Wpisz wiadomość..."
-                    />
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
-                        onClick={sendMessage}
-                    >
-                        Wyślij
-                    </button>
-                </div>
+        <div className="h-[calc(100vh-4rem)] flex flex-col max-w-xl mx-auto w-full p-4">
+            {/* Pasek górny: Pokój + Opuść */}
+            <div className="h-16 flex justify-between items-center">
+                <h2 className="text-xl font-bold">Pokój: {room}</h2>
+                <button
+                    onClick={handleLeave}
+                    className="text-sm text-red-600 underline"
+                >
+                    Opuść pokój
+                </button>
             </div>
+
+            {/* Sekcja wiadomości */}
+            <div className="flex-1 overflow-y-auto bg-white p-4 rounded shadow mb-4">
+                {messages.map((m, i) => (
+                    <div
+                        key={i}
+                        className={`mb-2 p-2 rounded ${m.username === username
+                            ? 'bg-blue-200 text-right'
+                            : 'bg-gray-100 text-left'
+                            }`}
+                    >
+                        <div className="text-sm font-semibold">{m.username}</div>
+                        <div>{m.content}</div>
+                        <div className="text-xs text-gray-500">{formatTime(m.timestamp)}</div>
+                    </div>
+                ))}
+                <div ref={bottomRef} />
+            </div>
+
+            {/* Pasek dolny: input + przycisk */}
+            <div className="h-16 flex gap-2">
+                <input
+                    className="flex-1 p-2 border rounded shadow"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') sendMessage();
+                    }}
+                    placeholder="Wpisz wiadomość..."
+                />
+                <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+                    onClick={sendMessage}
+                >
+                    Wyślij
+                </button>
+            </div>
+        </div>
     );
 }
