@@ -72,7 +72,5 @@ WWWProject/
 │
 ├── .gitignore                             # Ignorowane globalnie pliki (root)
 ├── LICENSE                                # Licencja projektu
-|── package-lock.json
-|── package.json
 └── README.md                              # Dokumentacja główna
 </pre>
