@@ -27,10 +27,8 @@ Prosta aplikacja czatu na żywo z logowaniem, pokojami i komunikacją w czasie r
 
 ## Struktura katalogów
 <pre>
-live-chat-app/
+WWWProject/
 ├── client/                                # Frontend: React + Tailwind + Vite
-│   ├── public/
-│   │   └── index.html                     # Główna strona HTML (root Reacta)
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── Header.tsx                 # Pasek nagłówka (nawigacja, tytuł)
@@ -47,8 +45,9 @@ live-chat-app/
 │   │   └── vite-env.d.ts                  # Typy Vite (wymagane przez TS)
 │   ├── .gitignore                         # Ignorowane pliki
 │   ├── eslint.config.js                   # Konfiguracja ESLinta (opcjonalnie)
-│   ├── package.json                       # Zależności frontendu
+│   ├── index.html                         # Główna strona HTML (root Reacta)
 │   ├── package-lock.json
+│   ├── package.json                       # Zależności frontendu
 │   ├── postcss.config.cjs                 # Konfiguracja Tailwind (PostCSS)
 │   ├── tailwind.config.js                 # Tailwind konfiguracja
 │   ├── tsconfig.app.json                  # Typy aplikacji
@@ -68,9 +67,12 @@ live-chat-app/
 │   ├── chat.db                            # Plik bazy danych SQLite
 │   ├── package.json                       # Zależności backendu
 │   ├── package-lock.json
-│   └── tsconfig.json                      # TypeScript config backendu
+│   ├── tsconfig.json                      # TypeScript config backendu
+│   └── README.md
 │
 ├── .gitignore                             # Ignorowane globalnie pliki (root)
 ├── LICENSE                                # Licencja projektu
-├── README.md                              # Dokumentacja główna
+|── package-lock.json
+|── package.json
+└── README.md                              # Dokumentacja główna
 </pre>
