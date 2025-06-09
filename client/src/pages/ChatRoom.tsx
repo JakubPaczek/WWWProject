@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { connectSocket, disconnectSocket } from '../socket';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
 
 type Message = {
     username: string;
