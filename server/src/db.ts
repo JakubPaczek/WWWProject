@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 
 const db = new Database('chat.db');
 
-// Tabela użytkowników
+// tabela użytkowników: unikalna nazwa, zahaszowane hasło
 db.prepare(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -11,7 +11,7 @@ db.prepare(`
   )
 `).run();
 
-// Tabela wiadomości
+// tabela wiadomości: treść, nazwa pokoju, użytkownik, czas
 db.prepare(`
   CREATE TABLE IF NOT EXISTS messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +22,7 @@ db.prepare(`
   )
 `).run();
 
-// Tabela pokoi
+// tabela pokoi: lista dostępnych pokojów
 db.prepare(`
   CREATE TABLE IF NOT EXISTS rooms (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,6 +34,7 @@ const defaultRooms = ['Główny', 'Matematyka', 'Informatyka', 'Studia', 'Random
 
 for (const name of defaultRooms) {
   try {
+    // dodawanie pokoju (jeśli istnieje – catch go ignoruje)
     db.prepare('INSERT INTO rooms (name) VALUES (?)').run(name);
   } catch {}
 }

@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es6", // standard ECMAScript 6
+    "module": "commonjs", // system modułów CommonJS
     "rootDir": "./src",
     "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true
+    "strict": true, // włączenie wszystkich zasad ścisłego typowania
+    "esModuleInterop": true // pozwala na używanie `import xyz from "moduł"
   }
 }

@@ -1,33 +1,33 @@
-import express from 'express';
-import cors from 'cors';
-import authRoutes from './routes/auth';
-import db from './db';
-import { authenticateToken } from './middleware/auth';
-import jwt from 'jsonwebtoken';
-
-// diff
-import { createServer } from 'http';
-import { Server } from 'socket.io';
+// importy bibliotek
+import express from 'express'; // do tworzenia serwera HTTP
+import cors from 'cors'; // obsługa CORS (łączenie frontend'u z backendem)
+import jwt from 'jsonwebtoken'; // obsługa tokenów JWT
+import { createServer } from 'http'; // łączenie express z socket.io
+import { Server } from 'socket.io'; // socket.io – obsługa WebSocketów
+import db from './db'; // baza danych
+import authRoutes from './routes/auth'; // import tras: /auth/login, /auth/register
+import { authenticateToken } from './middleware/auth'; // middleware JWT do REST API
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const httpServer = createServer(app);
+const PORT = process.env.PORT || 5000; // Port backend'u (domyślnie 5000)
+const httpServer = createServer(app); // łączenie Express z Node.js HTTP serverem
 
+// lista dozwolonych źródeł
 const allowedOrigins = [
     'http://localhost:5173',
     'https://jakubpaczek.github.io'
 ];
 
-// Konfiguracja socket.io
+// konfiguracja socket.io
 const io = new Server(httpServer, {
     cors: {
-        origin: allowedOrigins, // dokładny frontend
+        origin: allowedOrigins, // dozwolone źródła
         methods: ['GET', 'POST'],
-        credentials: true,
+        credentials: true, // przekazywanie ciastek
     },
 });
 
-
+// middleware Express
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -40,16 +40,14 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.get('/ping', (_req, res) => {
-    res.send('pong');
-});
-
+// REST API: wiadomości w danym pokoju (GET)
 app.get('/messages/:room', authenticateToken, (req, res) => {
     const room = req.params.room;
     const messages = db.prepare('SELECT * FROM messages WHERE room = ? ORDER BY timestamp ASC').all(room);
     res.json(messages);
 });
 
+// REST API: dodanie nowej wiadomości (POST)
 app.post('/messages/:room', authenticateToken, (req, res) => {
     const room = req.params.room;
     const { content } = req.body;
@@ -62,26 +60,16 @@ app.post('/messages/:room', authenticateToken, (req, res) => {
     res.status(201).json({ message: 'Message saved' });
 });
 
+// REST API: lista pokojów
 app.get('/rooms', authenticateToken, (_req, res) => {
     const rooms = db.prepare('SELECT * FROM rooms').all();
     res.json(rooms);
 });
 
-// app.post('/rooms', authenticateToken, (req, res) => {
-//   const { name } = req.body;
-//   if (!name) return res.status(400).json({ message: 'Room name required' });
-
-//   try {
-//     db.prepare('INSERT INTO rooms (name) VALUES (?)').run(name);
-//     res.status(201).json({ message: 'Room created' });
-//   } catch (err) {
-//     res.status(409).json({ message: 'Room already exists' });
-//   }
-// });
-
+// Endpointy uwierzytelnienia: /auth/login i /auth/register
 app.use('/auth', authRoutes);
 
-// Obsługa socket.io
+// Middleware socket.io: Autoryzacja po tokenie JWT (przy połączeniu WebSocket)
 io.use((socket, next) => {
     const token = socket.handshake.auth.token;
     if (!token) return next(new Error('Brak tokena'));
@@ -93,14 +81,17 @@ io.use((socket, next) => {
     });
 });
 
+// socket.io
 io.on('connection', (socket) => {
     const username = (socket as any).user.username;
     console.log(`Socket połączony: ${username} (${socket.id})`);
 
+    // dołączenie do pokoju czatu
     socket.on('join', (room) => {
         socket.join(room);
     });
 
+    // odebranie wiadomości od klienta, zapisanie i broadcast do pokoju
     socket.on('message', ({ room, content }) => {
         const timestamp = Date.now();
         if (typeof content !== 'string' || content.trim().length === 0) return;
@@ -109,12 +100,13 @@ io.on('connection', (socket) => {
             'INSERT INTO messages (room, username, content, timestamp) VALUES (?, ?, ?, ?)'
         ).run(room, username, content, timestamp);
 
+        // rozesłanie wiadomości do wszystkich w pokoju
         io.to(room).emit('message', { content, username, timestamp });
     });
 });
 
 
-// Uruchomienie serwera HTTP z socket.io
+// start serwera (HTTP + WebSocket)
 httpServer.listen(PORT, () => {
     console.log(`Server with socket.io listening at http://localhost:${PORT}`);
 });
